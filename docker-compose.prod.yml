@@ -1,0 +1,10 @@
+version : "3.9"
+services:
+  fastify-node-app:
+    build:
+      context: .
+      args:
+        NODE_ENV: production
+    env_file:
+      - ./config/prod/.env
+    command: node index.js

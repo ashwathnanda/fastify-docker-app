@@ -2,12 +2,5 @@ version : "3.9"
 services:
   fastify-node-app:
     build: .
-#    image: fastify-node-app-image
     ports:
       - "3000:3000"
-      - "3001:3001"
-    volumes:
-      - .:/app:ro
-      - /app/node_modules
-    env_file:
-      - ./.env

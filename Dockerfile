@@ -6,8 +6,13 @@ WORKDIR /app
 # Wont rerun npm install unless there is a change in the package.json
 COPY package.json .
 
+ARG NODE_ENV
 # Install dependencies
-RUN npm install
+RUN if [ "$NODE_ENV" = "production" ]; then \
+  npm install --only=production; \
+else \
+  npm install; \
+fi
 
 # Copy the app to the build directory
 COPY . ./
