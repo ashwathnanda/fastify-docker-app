@@ -11,3 +11,8 @@ services:
     env_file:
       - config/dev/.env
     command: npm run start-dev
+
+  fastify-node-mongo:
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root

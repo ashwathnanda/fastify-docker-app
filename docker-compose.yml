@@ -4,3 +4,16 @@ services:
     build: .
     ports:
       - "3000:3000"
+    depends_on:
+      - fastify-node-mongo
+
+  fastify-node-mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    volumes:
+      - mongo-db:/data/db
+
+volumes:
+  mongo-db:
