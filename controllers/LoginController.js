@@ -9,7 +9,7 @@ const {
 const LoginController = {
   loginUser: async (req, reply) => {
     try {
-      const collection = req.fastify.mongo.db.collection("jokes");
+      const collection = req.fastify.mongo.db.collection("users");
 
       const { email, password } = req.body;
       const user = await collection.findOne({ email });
@@ -19,7 +19,7 @@ const LoginController = {
           message: "Invalid email or password",
         });
       }
-      const isMatch = await user.comparePassword(password);
+      const isMatch = await comparePassword(password, user.password);
       if (!isMatch) {
         return reply.code(401).send({
           status: "error",
@@ -40,6 +40,7 @@ const LoginController = {
       return reply.code(500).send({
         status: "error",
         message: "Internal server error",
+        error: error.message,
       });
     }
   },
@@ -55,7 +56,14 @@ const LoginController = {
           message: "User already exists",
         });
       }
-      const newUser = await collection.insertOne({ name, email, password });
+
+      const hashedPassword = await encryptPassword(password);
+      const newUser = await collection.insertOne({
+        name,
+        email,
+        password: hashedPassword,
+      });
+
       const token = await generateToken({
         id: newUser._id,
         email: newUser.email,
@@ -70,6 +78,7 @@ const LoginController = {
       return reply.code(500).send({
         status: "error",
         message: "Internal server error",
+        error: error.message,
       });
     }
   },
