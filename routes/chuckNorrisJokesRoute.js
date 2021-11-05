@@ -2,7 +2,7 @@ const {
   ChuckNorrisJokeController,
 } = require("../controllers/ChuckNorrisJokeController");
 
-async function chuckNorrisRoutes(fastify, options) {
+async function chuckNorrisRoutes(fastify, _) {
   fastify.get("/jokes", ChuckNorrisJokeController.getRandomJoke);
   fastify.get("/jokes/all", ChuckNorrisJokeController.getAllJokes);
   fastify.get("/jokes/:category", ChuckNorrisJokeController.getJokeByCategory);

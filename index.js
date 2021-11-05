@@ -1,12 +1,19 @@
 const db = require("./db");
-const genshinRoutes = require("./routes/chuckNorrisJokesRoute");
+const chuckNorrisRoute = require("./routes/chuckNorrisJokesRoute");
+const loginRoutes = require("./routes/LoginRoute");
+const swagger = require("./config/swagger");
 
 const fastify = require("fastify")({
   logger: true,
 });
 
+fastify.register(require("fastify-swagger"), swagger.options);
 fastify.register(db);
-fastify.register(genshinRoutes);
+fastify.register(chuckNorrisRoute);
+fastify.register(loginRoutes);
+fastify.register(require("fastify-bcrypt"), {
+  saltWorkFactor: 12,
+});
 
 fastify.addHook("onRequest", async (request, reply) => {
   // Some code
@@ -21,6 +28,7 @@ const PORT = process.env.PORT || 3000;
 
 // Run the server!
 fastify.listen(PORT, "0.0.0.0", function (err, address) {
+  fastify.swagger();
   if (err) {
     fastify.log.error(err);
     process.exit(1);

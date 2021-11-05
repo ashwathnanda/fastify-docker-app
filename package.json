@@ -13,9 +13,14 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.24.0",
+    "bcrypt": "^5.0.1",
     "fastify": "^3.22.1",
+    "fastify-bcrypt": "^0.1.1",
+    "fastify-jwt": "^3.2.1",
     "fastify-mongodb": "^4.1.1",
     "fastify-plugin": "^3.0.0",
+    "fastify-swagger": "^4.12.6",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.12"
   },
   "devDependencies": {

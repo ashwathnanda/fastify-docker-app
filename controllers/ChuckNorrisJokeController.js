@@ -1,4 +1,5 @@
 const axios = require("axios");
+const chuckNorrisJokes = require("../models/ChuckNorrisJokes");
 // Fetch Chuck Norris joke from API
 
 const ChuckNorrisJokeController = {
@@ -8,7 +9,13 @@ const ChuckNorrisJokeController = {
       const response = await axios.get(
         "https://api.chucknorris.io/jokes/random"
       );
-      await collection.insertOne(response.data);
+      const newJoke = new chuckNorrisJokes({
+        joke: response.data.value,
+        jokeId: response.data.id,
+        categories: response.data.categories,
+        created_at: response.data.created_at,
+      });
+      await collection.insertOne(newJoke);
       reply.code(200).send(response.data);
     } catch (error) {
       reply.code(500).send({ error: error.message });
