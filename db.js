@@ -1,18 +1,16 @@
 const { database } = require("./config/application-config");
-const mongoose = require("mongoose");
+const fastifyPlugin = require("fastify-plugin");
 
-const dbConnection = () => {
+const dbConnector = async (fastify, options) => {
   const mongoConfig = database.MONGO;
   const dbUrl = `mongodb://${mongoConfig.user}:${mongoConfig.password}@${mongoConfig.host}:${mongoConfig.port}/?authSource=admin`;
-  mongoose.connect(dbUrl, {
+  fastify.register(require("fastify-mongodb"), {
+    url: dbUrl,
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+    database: "test",
+    forceClose: true,
   });
-  const db = mongoose.connection;
-  db.on("error", console.error.bind(console, "connection error:"));
-  db.once("open", function () {
-    console.log("Connected to MongoDB Database");
-  });
+  fastify.log.info(`Connected to MongoDB`);
 };
 
-module.exports = dbConnection;
+module.exports = fastifyPlugin(dbConnector);

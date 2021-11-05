@@ -12,7 +12,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.24.0",
     "fastify": "^3.22.1",
+    "fastify-mongodb": "^4.1.1",
+    "fastify-plugin": "^3.0.0",
     "mongoose": "^6.0.12"
   },
   "devDependencies": {

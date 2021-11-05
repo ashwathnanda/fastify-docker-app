@@ -1,20 +1,23 @@
-const mongoose = require("mongoose");
-const { database } = require("./config/application-config");
-const dbConnection = require("./db");
+const db = require("./db");
+const genshinRoutes = require("./routes/chuckNorrisJokesRoute");
+
 const fastify = require("fastify")({
   logger: true,
+});
+
+fastify.register(db);
+fastify.register(genshinRoutes);
+
+fastify.addHook("onRequest", async (request, reply) => {
+  // Some code
+  request.fastify = fastify;
 });
 
 // Constants
 const PORT = process.env.PORT || 3000;
 
 // Connect to MongoDB
-dbConnection();
-
-// Declare a route
-fastify.get("/", function (request, reply) {
-  reply.send({ hello: "world" });
-});
+// dbConnection();
 
 // Run the server!
 fastify.listen(PORT, "0.0.0.0", function (err, address) {
