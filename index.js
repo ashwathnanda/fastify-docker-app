@@ -1,9 +1,8 @@
 const db = require("./storage/db");
-// const redisConnection = require("./storage/redis");
+const redisConnection = require("./storage/redis");
 const chuckNorrisRoute = require("./routes/chuckNorrisJokesRoute");
 const loginRoutes = require("./routes/LoginRoute");
 const swagger = require("./config/swagger");
-const session = require("./storage/fastifySession");
 
 const fastify = require("fastify")({
   logger: true,
@@ -11,16 +10,19 @@ const fastify = require("fastify")({
 
 fastify.register(require("fastify-swagger"), swagger.options);
 fastify.register(db);
-// fastify.register(redisConnection);
+fastify.register(redisConnection);
 fastify.register(chuckNorrisRoute);
 fastify.register(loginRoutes);
-fastify.register(require("fastify-bcrypt"), {
-  saltWorkFactor: 12,
-});
 
 fastify.addHook("onRequest", async (request, reply) => {
   // Some code
   request.fastify = fastify;
+  request.token = request.headers.authorization;
+});
+
+fastify.addHook("onResponse", async (request, reply) => {
+  reply.header("X-Request-Id", request.id);
+  reply.header("X-Hostname", request.hostname);
 });
 
 // Constants

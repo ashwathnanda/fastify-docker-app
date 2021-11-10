@@ -10,6 +10,7 @@ const LoginController = {
   loginUser: async (req, reply) => {
     try {
       const collection = req.fastify.mongo.db.collection("users");
+      const { redis } = req.fastify;
 
       const { email, password } = req.body;
       const user = await collection.findOne({ email });
@@ -19,6 +20,14 @@ const LoginController = {
           message: "Invalid email or password",
         });
       }
+
+      if (await redis.get(user.email)) {
+        return reply.code(401).send({
+          status: "error",
+          message: "User already logged in",
+        });
+      }
+
       const isMatch = await comparePassword(password, user.password);
       if (!isMatch) {
         return reply.code(401).send({
@@ -31,6 +40,16 @@ const LoginController = {
         email: user.email,
         role: user.role,
       });
+
+      await redis.set(user.email, token, "EX", 30, (err, reply) => {
+        if (err) {
+          return reply.code(500).send({
+            status: "error",
+            message: "Internal server error",
+          });
+        }
+      });
+
       return reply.code(200).send({
         status: "success",
         message: "User logged in successfully",
