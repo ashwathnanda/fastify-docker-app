@@ -1,7 +1,9 @@
-const db = require("./db");
+const db = require("./storage/db");
+// const redisConnection = require("./storage/redis");
 const chuckNorrisRoute = require("./routes/chuckNorrisJokesRoute");
 const loginRoutes = require("./routes/LoginRoute");
 const swagger = require("./config/swagger");
+const session = require("./storage/fastifySession");
 
 const fastify = require("fastify")({
   logger: true,
@@ -9,6 +11,7 @@ const fastify = require("fastify")({
 
 fastify.register(require("fastify-swagger"), swagger.options);
 fastify.register(db);
+// fastify.register(redisConnection);
 fastify.register(chuckNorrisRoute);
 fastify.register(loginRoutes);
 fastify.register(require("fastify-bcrypt"), {
