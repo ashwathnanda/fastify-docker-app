@@ -19,3 +19,6 @@
 
 # Pass multiple files to docker-compose for diff envs.
 # docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+
+# Scale Containers
+# docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --scale fastify-node-app=2

@@ -6,6 +6,7 @@ const swagger = require("./config/swagger");
 const { validateRequest } = require("./util/auth");
 const fastify = require("fastify")({
   logger: true,
+  trustProxy: true,
 });
 
 fastify.addHook("onRequest", async (request, reply) => {
@@ -41,6 +42,7 @@ fastify.route({
     reply.send({
       status: "OK",
       message: "UP",
+      headers: request.headers,
     });
   },
 });
