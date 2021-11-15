@@ -21,6 +21,7 @@ fastify.addHook("onResponse", async (request, reply) => {
 
 // Register Plugins
 fastify.register(require("fastify-swagger"), swagger.options);
+fastify.register(require("fastify-cors"));
 fastify.register(db);
 fastify.register(redisConnection);
 

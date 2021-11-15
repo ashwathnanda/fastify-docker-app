@@ -22,3 +22,12 @@
 
 # Scale Containers
 # docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --scale fastify-node-app=2
+
+# Connect to AWS Instance
+# ssh -i trick-personal-keypair.pem ec2-user@18.234.34.6
+
+# Install And add ec2-user to docker group
+#sudo yum update -y
+#sudo yum install docker -y
+#sudo service docker start
+#sudo usermod -a -G docker ec2-user
