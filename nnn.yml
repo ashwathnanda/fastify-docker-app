@@ -23,6 +23,12 @@
 # Scale Containers
 # docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --scale fastify-node-app=2
 
+# Build only node app
+# docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build --no-deps fastify-node-app
+
+# docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build --no-deps --force-recreate fastify-node-app
+
+
 # Connect to AWS Instance
 # ssh -i trick-personal-keypair.pem ec2-user@18.234.34.6
 

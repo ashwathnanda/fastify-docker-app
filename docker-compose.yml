@@ -11,6 +11,7 @@ services:
 
   fastify-node-app:
     build: .
+    image: ashwath5897/fastify-node-app
     depends_on:
       - fastify-node-mongo
 
